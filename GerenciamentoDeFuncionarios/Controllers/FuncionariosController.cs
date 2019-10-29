@@ -47,11 +47,16 @@ namespace GerenciamentoDeFuncionarios.Controllers
         // GET: Funcionarios/Create
         public IActionResult Create()
         {
-            ViewData["Lotacao"] =
+           
+        var selectListItems =
                  new SelectList(
                      _context.Departamento
                      , "Id",
                      "Nome");
+            selectListItems.Append(new SelectListItem() {Text= "", Value= "0" });
+
+            ViewData["Lotacao"] = selectListItems;
+                
             return View();
         }
 
@@ -84,6 +89,11 @@ namespace GerenciamentoDeFuncionarios.Controllers
             {
                 return NotFound();
             }
+            ViewData["Lotacao"] =
+                new SelectList(
+                    _context.Departamento
+                    , "Id",
+                    "Nome");
             return View(funcionario);
         }
 
@@ -92,7 +102,7 @@ namespace GerenciamentoDeFuncionarios.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Nascimento")] Funcionario funcionario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Nascimento,LotacaoId")] Funcionario funcionario)
         {
             if (id != funcionario.Id)
             {

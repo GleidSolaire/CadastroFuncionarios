@@ -64,6 +64,7 @@ namespace GerenciamentoDeFuncionarios.Controllers
         {
             departamento.Responsavel = _context.Funcionario
                     .Find(departamento.ResponsavelId);
+            ModelState.Clear();
             TryValidateModel(departamento);
             if (ModelState.IsValid)
             {
@@ -105,6 +106,10 @@ namespace GerenciamentoDeFuncionarios.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,ResponsavelId")] Departamento departamento)
         {
+            departamento.Responsavel = _context.Funcionario
+                    .Find(departamento.ResponsavelId);
+            ModelState.Clear();
+            TryValidateModel(departamento);
             if (id != departamento.Id)
             {
                 return NotFound();
@@ -130,7 +135,7 @@ namespace GerenciamentoDeFuncionarios.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ResponsavelId"] = new SelectList(_context.Funcionario, "Id", "Id", departamento.ResponsavelId);
+            ViewData["ResponsavelId"] = new SelectList(_context.Funcionario, "Id", "Nome", departamento.ResponsavelId);
             return View(departamento);
         }
 
